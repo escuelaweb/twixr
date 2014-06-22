@@ -17,6 +17,13 @@ class User extends Ardent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'users';
 
+  /**
+   * Fillable attributes of the model
+   *
+   * @var array
+   */
+  protected $fillable = ['name', 'email', 'username', 'password', 'password_confirmation'];  
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
@@ -37,6 +44,10 @@ class User extends Ardent implements UserInterface, RemindableInterface {
     'password_confirmation' => 'required_with:password|same:password'
   );
 
+  /**
+   * Ardent hashable attributes
+   *
+   */
   public static $passwordAttributes = array('password');
 
   /**
@@ -53,4 +64,43 @@ class User extends Ardent implements UserInterface, RemindableInterface {
    */
   public $autoHashPasswordAttributes = true;
 
+  /**
+   * Relationship, one-to-many with Follower
+   * List of followers
+   * @return Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function followers()
+  {
+    return $this->hasMany('Follower');
+  }
+
+  /**
+   * Relationship, one-to-many with Follower
+   * List of followed users
+   * @return Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function follows()
+  {
+    return $this->hasMany('Follower', 'follower_id');
+  }
+
+  /**
+   * Relationship, one-to-many with Twix
+   * List of twixes by an user
+   * @return Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function twixes()
+  {
+    return $this->hasMany('Twix');
+  }
+
+  /**
+   * Relationship, many-to-many with Twix
+   * List of an user's favorite twixes
+   * @return  Illuminate\Database\Eloquent\Relations\BelongsToMany
+   */
+  public function favs()
+  {
+    return $this->belongsToMany('Twix');
+  }
 }
