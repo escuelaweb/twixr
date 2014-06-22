@@ -1,0 +1,1 @@
+/var/www/twixr/app/views/twixes/edit.blade.php
