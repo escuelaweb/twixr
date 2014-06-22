@@ -18,3 +18,5 @@ Route::get('/', function()
 
 //Resource routes
 Route::resource('users', 'UsersController');
+Route::resource('twixes', 'TwixesController');
+Route::resource('followers', 'FollowersController');
