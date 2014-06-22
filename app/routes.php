@@ -15,3 +15,6 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+//Resource routes
+Route::resource('users', 'UsersController');
