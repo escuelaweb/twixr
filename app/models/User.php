@@ -38,7 +38,7 @@ class User extends Ardent implements UserInterface, RemindableInterface {
    */
   public static $rules = array(
     'name' => 'required|between:2,120',
-    'email' => 'required|between:7,255|unique:users,email',
+    'email' => 'required|between:7,255|email|unique:users,email',
     'username' => 'required|between:2,60|unique:users,username',
     'password' => 'required|min:5',
     'password_confirmation' => 'required_with:password|same:password'
@@ -63,6 +63,12 @@ class User extends Ardent implements UserInterface, RemindableInterface {
    * @var boolean
    */
   public $autoHashPasswordAttributes = true;
+
+  /**
+   * Hydrate new model records from input
+   * @var boolean
+   */
+  public $autoHydrateEntityFromInput = true;
 
   /**
    * Relationship, one-to-many with Follower
