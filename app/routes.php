@@ -16,6 +16,10 @@ Route::get('/', function()
 	return View::make('hello');
 });
 
+//Authentication routes
+Route::post('authenticate', ['as' => 'authenticate', 'uses' => 'UsersController@authenticate']);
+Route::get('logout', ['as' => 'logout', 'uses' => 'UsersController@logout']);
+
 //Resource routes
 Route::resource('users', 'UsersController');
 Route::resource('twixes', 'TwixesController');

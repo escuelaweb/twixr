@@ -31,16 +31,17 @@ class UsersController extends \BaseController {
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), User::$rules);
+		$user = new User();
 
-		if ($validator->fails())
+		if($user->save())
 		{
-			return Redirect::back()->withErrors($validator)->withInput();
+			Auth::login($user);
+			return Redirect::route('users.show', $user->id);	
 		}
-
-		User::create($data);
-
-		return Redirect::route('users.index');
+		else
+		{
+			return Redirect::back()->withErrors($user->errors())->withInput();	
+		}		
 	}
 
 	/**
@@ -51,7 +52,7 @@ class UsersController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$user = User::findOrFail($id);
+		$user = User::with('twixes')->findOrFail($id);
 
 		return View::make('users.show', compact('user'));
 	}
@@ -102,6 +103,38 @@ class UsersController extends \BaseController {
 		User::destroy($id);
 
 		return Redirect::route('users.index');
+	}
+
+	public function authenticate()
+	{
+		if(! Auth::check())
+		{
+			if(Auth::attempt(['email' => Input::get('login_email'), 'password' => Input::get('login_password')]))
+			{
+				return Redirect::route('users.show', Auth::user()->id);		
+			}
+			else
+			{
+				return Redirect::back();	
+			}
+		}
+		else
+		{
+			return Redirect::route('users.show', Auth::user()->id);
+		}
+	}
+
+	public function logout()
+	{
+		if(Auth::check())
+		{
+			Auth::logout();
+			return Redirect::route('users.create');
+		}
+		else
+		{
+			return Redirect::back();
+		}
 	}
 
 }

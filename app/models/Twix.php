@@ -14,6 +14,12 @@ class Twix extends Ardent {
 		'user_id' => 'required|integer|exists:users,id'
 	];
 
+  /**
+   * Hydrate new model records from input
+   * @var boolean
+   */
+  public $autoHydrateEntityFromInput = true;	
+
 	/**
 	 * Fillable attributes of the model
 	 *
